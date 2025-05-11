@@ -15,7 +15,7 @@
 - N/A
 
 ### Removed
-- N/A
+- All `.kts` (Kotlin script) files from the project for Gradle compatibility.
 
 ### Fixed
 - N/A

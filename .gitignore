@@ -1,3 +1,5 @@
+# Ignore Gradle Kotlin Script files
+*.kts
 .vscode/
 # Byte-compiled / optimized / DLL files
 __pycache__/
