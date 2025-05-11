@@ -1,0 +1,117 @@
+version: '3.8'
+
+services:
+  # Infrastructure Services (extending from base docker-compose.yml)
+  postgres:
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+    restart: unless-stopped
+
+  redis:
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+    restart: unless-stopped
+
+  kafka:
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://${KAFKA_HOST}:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+    restart: unless-stopped
+
+  influxdb:
+    environment:
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+    restart: unless-stopped
+
+  # Application Services
+  gateway-api:
+    build:
+      context: ../backend-nodejs/gateway-api
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - JWT_SECRET=${JWT_SECRET}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - MONGO_URI=${MONGO_URI}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  websocket-service:
+    build:
+      context: ../backend-nodejs/websocket-service
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - WS_PORT=3001
+      - JWT_SECRET=${JWT_SECRET}
+      - KAFKA_BROKERS=kafka:29092
+    ports:
+      - "3001:3001"
+    depends_on:
+      - kafka
+    restart: unless-stopped
+
+  # Java Microservices
+  order-service:
+    build:
+      context: ../backend-java/microservices/order-service
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tradingdb
+      - SPRING_DATASOURCE_USERNAME=trading_user
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+    depends_on:
+      - postgres
+      - kafka
+    restart: unless-stopped
+
+  portfolio-service:
+    build:
+      context: ../backend-java/microservices/portfolio-service
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tradingdb
+      - SPRING_DATASOURCE_USERNAME=trading_user
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ../frontend-angular
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: unless-stopped

@@ -1,3 +1,4 @@
+.vscode/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -180,3 +181,43 @@ cython_debug/
 ._*
 .Spotlight-V100
 .Trashes
+
+# Java Spring and Gradle specific
+.gradle/
+bin/
+out/
+*.class
+*.war
+*.ear
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# Spring Boot
+spring-boot-*.pid
+application-*.yml
+application-*.properties
+!application.yml
+!application.properties
+
+# Gradle Enterprise
+.gradle/enterprise/
+
+# IDE - Eclipse
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# Logs
+logs/
+*.log.*
+
+# Test reports
+test-output/
+reports/
+jacoco/
+
+# Local configuration
+application-local.yml
+application-local.properties

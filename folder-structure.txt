@@ -1,0 +1,613 @@
+.
+├── api
+│   ├── build.gradle.kts
+│   └── src
+│       └── main
+│           └── java
+│               └── com
+│                   └── tradingplatform
+│                       └── api
+│                           ├── ApiApplication.java
+│                           ├── config
+│                           │   ├── AsyncConfig.java
+│                           │   ├── JacksonConfig.java
+│                           │   ├── SecurityConfig.java
+│                           │   └── WebClientConfig.java
+│                           ├── composite
+│                           │   ├── product
+│                           │   │   ├── ProductCompositeApi.java
+│                           │   │   └── ProductCompositeController.java
+│                           │   └── trading
+│                           │       ├── TradingCompositeApi.java
+│                           │       └── TradingCompositeController.java
+│                           ├── core
+│                           │   ├── market
+│                           │   │   ├── MarketDataApi.java
+│                           │   │   └── MarketDataController.java
+│                           │   ├── order
+│                           │   │   ├── OrderApi.java
+│                           │   │   └── OrderController.java
+│                           │   ├── portfolio
+│                           │   │   ├── PortfolioApi.java
+│                           │   │   └── PortfolioController.java
+│                           │   ├── product
+│                           │   │   ├── ProductApi.java
+│                           │   │   └── ProductController.java
+│                           │   ├── recommendation
+│                           │   │   ├── RecommendationApi.java
+│                           │   │   └── RecommendationController.java
+│                           │   └── review
+│                           │       ├── ReviewApi.java
+│                           │       └── ReviewController.java
+│                           ├── event
+│                           │   ├── EventPublisher.java
+│                           │   ├── EventSubscriber.java
+│                           │   └── models
+│                           │       ├── OrderEvent.java
+│                           │       ├── PortfolioEvent.java
+│                           │       └── PriceEvent.java
+│                           └── exceptions
+│                               ├── GlobalExceptionHandler.java
+│                               ├── InvalidDataException.java
+│                               ├── NotFoundException.java
+│                               └── ServiceException.java
+├── auth0
+│   ├── auth0-config.json
+│   ├── login-callback.html
+│   ├── logout-callback.html
+│   └── rules
+│       ├── add-roles.js
+│       ├── enrich-tokens.js
+│       └── whitelist-ips.js
+├── build.gradle.kts
+├── Changelog.md
+├── clean-up.sh
+├── common
+│   ├── build.gradle.kts
+│   ├── proto
+│   │   ├── market_data.proto
+│   │   ├── order.proto
+│   │   ├── portfolio.proto
+│   │   └── product.proto
+│   ├── schemas
+│   │   ├── market-data-schema.json
+│   │   ├── order-schema.json
+│   │   ├── portfolio-schema.json
+│   │   └── product-schema.json
+│   └── src
+│       └── main
+│           └── java
+│               └── com
+│                   └── tradingplatform
+│                       └── common
+│                           ├── config
+│                           │   ├── CommonConfig.java
+│                           │   └── MetricsConfig.java
+│                           ├── dto
+│                           │   ├── ErrorResponse.java
+│                           │   ├── MarketDataDto.java
+│                           │   ├── OrderDto.java
+│                           │   ├── PortfolioDto.java
+│                           │   └── ProductDto.java
+│                           ├── event
+│                           │   ├── EventProcessor.java
+│                           │   └── EventPublisher.java
+│                           ├── utils
+│                           │   ├── DateUtils.java
+│                           │   ├── MathUtils.java
+│                           │   └── ValidationUtils.java
+│                           └── validation
+│                               ├── OrderValidator.java
+│                               └── ValidationResult.java
+├── docker
+│   ├── docker-compose.prod.yml
+│   ├── docker-compose.yml
+│   ├── Dockerfile.api
+│   ├── Dockerfile.frontend
+│   ├── Dockerfile.template
+│   ├── Dockerfile.trading-engine
+│   └── nginx
+│       ├── conf.d
+│       │   └── default.conf
+│       └── nginx.conf
+├── docker-compose.yml
+├── docs
+│   ├── api
+│   │   ├── openapi-specs
+│   │   │   ├── market-data-api.yaml
+│   │   │   ├── order-api.yaml
+│   │   │   ├── portfolio-api.yaml
+│   │   │   └── product-api.yaml
+│   │   └── postman
+│   │       └── trading-platform.postman_collection.json
+│   ├── architecture
+│   │   ├── component-diagram.png
+│   │   ├── data-flow-diagram.png
+│   │   └── service-interactions.png
+│   ├── deployment
+│   │   ├── aws-architecture.png
+│   │   ├── kubernetes-deployment.yaml
+│   │   └── scaling-strategy.md
+│   └── user-guides
+│       ├── admin-guide.md
+│       ├── developer-guide.md
+│       └── user-guide.md
+├── engine
+│   ├── analytics-engine
+│   │   ├── build.gradle.kts
+│   │   ├── Dockerfile
+│   │   └── src
+│   │       └── main
+│   │           ├── java
+│   │           │   └── com
+│   │           │       └── tradingplatform
+│   │           │           └── analytics
+│   │           │               ├── AnalyticsApplication.java
+│   │           │               ├── config
+│   │           │               │   ├── KafkaConfig.java
+│   │           │               │   └── SparkConfig.java
+│   │           │               ├── models
+│   │           │               │   ├── AnalyticsResult.java
+│   │           │               │   └── MarketTrend.java
+│   │           │               └── service
+│   │           │                   ├── MarketAnalysisService.java
+│   │           │                   ├── PredictionService.java
+│   │           │                   └── TrendAnalysisService.java
+│   │           └── resources
+│   │               ├── application.yml
+│   │               └── logback.xml
+│   └── trading-engine
+│       └── app
+│           ├── api
+│           │   ├── order_api.py
+│           │   └── position_api.py
+│           ├── consumers
+│           │   ├── kafka_consumer.py
+│           │   └── market_data_consumer.py
+│           ├── core
+│           │   ├── engine.py
+│           │   ├── matching_engine.py
+│           │   ├── order_book.py
+│           │   └── position_manager.py
+│           ├── main.py
+│           ├── models
+│           │   ├── market_data.py
+│           │   ├── order.py
+│           │   └── position.py
+│           ├── requirements.txt
+│           └── services
+│               ├── execution_service.py
+│               ├── notification_service.py
+│               ├── order_service.py
+│               └── risk_manager.py
+├── folder-structure.txt
+├── frontend
+│   ├── angular.json
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── src
+│   │   ├── app
+│   │   │   ├── app-routing.module.ts
+│   │   │   ├── app.component.html
+│   │   │   ├── app.component.scss
+│   │   │   ├── app.component.ts
+│   │   │   ├── app.module.ts
+│   │   │   ├── components
+│   │   │   │   ├── auth
+│   │   │   │   │   ├── login
+│   │   │   │   │   │   ├── login.component.html
+│   │   │   │   │   │   ├── login.component.scss
+│   │   │   │   │   │   └── login.component.ts
+│   │   │   │   │   ├── logout
+│   │   │   │   │   │   ├── logout.component.html
+│   │   │   │   │   │   ├── logout.component.scss
+│   │   │   │   │   │   └── logout.component.ts
+│   │   │   │   │   └── register
+│   │   │   │   │       ├── register.component.html
+│   │   │   │   │       ├── register.component.scss
+│   │   │   │   │       └── register.component.ts
+│   │   │   │   ├── dashboard
+│   │   │   │   │   ├── dashboard.component.html
+│   │   │   │   │   ├── dashboard.component.scss
+│   │   │   │   │   ├── dashboard.component.ts
+│   │   │   │   │   ├── market-overview
+│   │   │   │   │   │   ├── market-overview.component.html
+│   │   │   │   │   │   ├── market-overview.component.scss
+│   │   │   │   │   │   └── market-overview.component.ts
+│   │   │   │   │   ├── portfolio-summary
+│   │   │   │   │   │   ├── portfolio-summary.component.html
+│   │   │   │   │   │   ├── portfolio-summary.component.scss
+│   │   │   │   │   │   └── portfolio-summary.component.ts
+│   │   │   │   │   └── watchlist
+│   │   │   │   │       ├── watchlist.component.html
+│   │   │   │   │       ├── watchlist.component.scss
+│   │   │   │   │       └── watchlist.component.ts
+│   │   │   │   └── trading
+│   │   │   │       ├── chart
+│   │   │   │       │   ├── chart.component.html
+│   │   │   │       │   ├── chart.component.scss
+│   │   │   │       │   └── resources
+│   │       │       ├── application.yml
+│   │       │       ├── bootstrap.yml
+│   │       │       ├── kafka.properties
+│   │       │       └── logback.xml
+│   │       └── test
+│   │           ├── java
+│   │           │   └── com
+│   │           │       └── tradingplatform
+│   │           │           └── realtimedata
+│   │           │               ├── controller
+│   │           │               │   └── MarketDataControllerTest.java
+│   │           │               └── service
+│   │           │                   └── MarketDataServiceTest.java
+│   │           └── resources
+│   │               └── application-test.yml── chart.component.ts
+│   │   │   │       ├── order-book
+│   │   │   │       │   ├── order-book.component.html
+│   │   │   │       │   ├── order-book.component.scss
+│   │   │   │       │   └── order-book.component.ts
+│   │   │   │       ├── order-form
+│   │   │   │       │   ├── order-form.component.html
+│   │   │   │       │   ├── order-form.component.scss
+│   │   │   │       │   └── order-form.component.ts
+│   │   │   │       └── trading-view
+│   │   │   │           ├── trading-view.component.html
+│   │   │   │           ├── trading-view.component.scss
+│   │   │   │           └── trading-view.component.ts
+│   │   │   ├── guards
+│   │   │   │   ├── admin.guard.ts
+│   │   │   │   ├── auth.guard.ts
+│   │   │   │   └── role.guard.ts
+│   │   │   ├── models
+│   │   │   │   ├── market-data.model.ts
+│   │   │   │   ├── order.model.ts
+│   │   │   │   ├── portfolio.model.ts
+│   │   │   │   ├── product.model.ts
+│   │   │   │   └── user.model.ts
+│   │   │   ├── services
+│   │   │   │   ├── auth.service.ts
+│   │   │   │   ├── market-data.service.ts
+│   │   │   │   ├── notification.service.ts
+│   │   │   │   ├── order.service.ts
+│   │   │   │   ├── portfolio.service.ts
+│   │   │   │   ├── product.service.ts
+│   │   │   │   └── websocket.service.ts
+│   │   │   └── shared
+│   │   │       ├── components
+│   │   │       │   ├── footer
+│   │   │       │   │   ├── footer.component.html
+│   │   │       │   │   ├── footer.component.scss
+│   │   │       │   │   └── footer.component.ts
+│   │   │       │   ├── header
+│   │   │       │   │   ├── header.component.html
+│   │   │       │   │   ├── header.component.scss
+│   │   │       │   │   └── header.component.ts
+│   │   │       │   └── sidebar
+│   │   │       │       ├── sidebar.component.html
+│   │   │       │       ├── sidebar.component.scss
+│   │   │       │       └── sidebar.component.ts
+│   │   │       ├── directives
+│   │   │       │   ├── click-outside.directive.ts
+│   │   │       │   └── number-only.directive.ts
+│   │   │       ├── interceptors
+│   │   │       │   ├── auth.interceptor.ts
+│   │   │       │   └── error.interceptor.ts
+│   │   │       └── pipes
+│   │   │           ├── currency-formatter.pipe.ts
+│   │   │           └── date-formatter.pipe.ts
+│   │   ├── assets
+│   │   │   ├── favicon.ico
+│   │   │   ├── fonts
+│   │   │   ├── images
+│   │   │   └── json
+│   │   ├── environments
+│   │   │   ├── environment.prod.ts
+│   │   │   └── environment.ts
+│   │   ├── index.html
+│   │   ├── main.ts
+│   │   └── styles.scss
+│   ├── tsconfig.app.json
+│   ├── tsconfig.json
+│   └── tsconfig.spec.json
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradle.properties
+├── LICENSE
+├── microservices
+│   ├── admin-service
+│   │   ├── build.gradle
+│   │   ├── Dockerfile
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── com
+│   │       │   │       └── tradingplatform
+│   │       │   │           └── admin
+│   │       │   │               ├── AdminServiceApplication.java
+│   │       │   │               ├── config
+│   │       │   │               │   ├── SecurityConfig.java
+│   │       │   │               │   └── WebConfig.java
+│   │       │   │               ├── controller
+│   │       │   │               │   ├── AdminController.java
+│   │       │   │               │   ├── ConfigController.java
+│   │       │   │               │   └── UserManagementController.java
+│   │       │   │               ├── model
+│   │       │   │               │   ├── AdminAction.java
+│   │       │   │               │   ├── AuditLog.java
+│   │       │   │               │   └── SystemConfig.java
+│   │       │   │               ├── repository
+│   │       │   │               │   ├── AuditLogRepository.java
+│   │       │   │               │   └── SystemConfigRepository.java
+│   │       │   │               └── service
+│   │       │   │                   ├── AuditService.java
+│   │       │   │                   ├── ConfigService.java
+│   │       │   │                   └── UserManagementService.java
+│   │       │   └── resources
+│   │       │       ├── application.yml
+│   │       │       ├── bootstrap.yml
+│   │       │       └── logback.xml
+│   │       └── test
+│   │           ├── java
+│   │           │   └── com
+│   │           │       └── tradingplatform
+│   │           │           └── admin
+│   │           │               ├── controller
+│   │           │               │   └── AdminControllerTest.java
+│   │           │               └── service
+│   │           │                   └── ConfigServiceTest.java
+│   │           └── resources
+│   │               └── application-test.yml
+│   ├── common
+│   │   ├── build.gradle
+│   │   └── src
+│   │       └── main
+│   │           └── java
+│   │               └── com
+│   │                   └── tradingplatform
+│   │                       └── common
+│   │                           ├── config
+│   │                           │   ├── DatabaseConfig.java
+│   │                           │   ├── KafkaConfig.java
+│   │                           │   └── RedisConfig.java
+│   │                           ├── dto
+│   │                           │   ├── BaseDto.java
+│   │                           │   ├── PagedResult.java
+│   │                           │   └── ServiceResponse.java
+│   │                           ├── exception
+│   │                           │   ├── ErrorCode.java
+│   │                           │   ├── GlobalExceptionHandler.java
+│   │                           │   └── ServiceException.java
+│   │                           ├── kafka
+│   │                           │   ├── KafkaConsumerConfig.java
+│   │                           │   ├── KafkaProducerConfig.java
+│   │                           │   └── KafkaTopics.java
+│   │                           ├── logging
+│   │                           │   └── LoggingAspect.java
+│   │                           ├── metrics
+│   │                           │   ├── MetricsConfig.java
+│   │                           │   └── ServiceMetrics.java
+│   │                           ├── security
+│   │                           │   ├── JwtAuthenticationFilter.java
+│   │                           │   ├── JwtTokenProvider.java
+│   │                           │   └── SecurityUtils.java
+│   │                           └── util
+│   │                               ├── DateUtils.java
+│   │                               ├── JsonUtils.java
+│   │                               └── ValidationUtils.java
+│   ├── order-service
+│   │   ├── build.gradle
+│   │   ├── Dockerfile
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── com
+│   │       │   │       └── tradingplatform
+│   │       │   │           └── order
+│   │       │   │               ├── OrderServiceApplication.java
+│   │       │   │               ├── config
+│   │       │   │               │   ├── AsyncConfig.java
+│   │       │   │               │   ├── CacheConfig.java
+│   │       │   │               │   └── KafkaConfig.java
+│   │       │   │               ├── controller
+│   │       │   │               │   ├── OrderController.java
+│   │       │   │               │   └── OrderHistoryController.java
+│   │       │   │               ├── entity
+│   │       │   │               │   ├── Order.java
+│   │       │   │               │   ├── OrderAudit.java
+│   │       │   │               │   └── OrderStatus.java
+│   │       │   │               ├── event
+│   │       │   │               │   ├── OrderCancelledEvent.java
+│   │       │   │               │   ├── OrderCreatedEvent.java
+│   │       │   │               │   ├── OrderEvent.java
+│   │       │   │               │   └── OrderFilledEvent.java
+│   │       │   │               ├── messaging
+│   │       │   │               │   ├── KafkaEventPublisher.java
+│   │       │   │               │   └── OrderEventConsumer.java
+│   │       │   │               ├── repository
+│   │       │   │               │   ├── OrderAuditRepository.java
+│   │       │   │               │   └── OrderRepository.java
+│   │       │   │               └── service
+│   │       │   │                   ├── OrderHistoryService.java
+│   │       │   │                   ├── OrderService.java
+│   │       │   │                   ├── OrderValidationService.java
+│   │       │   │                   └── impl
+│   │       │   │                       └── OrderServiceImpl.java
+│   │       │   └── resources
+│   │       │       ├── application.yml
+│   │       │       ├── bootstrap.yml
+│   │       │       └── logback.xml
+│   │       └── test
+│   │           ├── java
+│   │           │   └── com
+│   │           │       └── tradingplatform
+│   │           │           └── order
+│   │           │               ├── controller
+│   │           │               │   └── OrderControllerTest.java
+│   │           │               └── service
+│   │           │                   └── OrderServiceTest.java
+│   │           └── resources
+│   │               └── application-test.yml
+│   ├── portfolio-service
+│   │   ├── build.gradle
+│   │   ├── Dockerfile
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── com
+│   │       │   │       └── tradingplatform
+│   │       │   │           └── portfolio
+│   │       │   │               ├── PortfolioServiceApplication.java
+│   │       │   │               ├── config
+│   │       │   │               │   ├── CacheConfig.java
+│   │       │   │               │   └── KafkaConfig.java
+│   │       │   │               ├── controller
+│   │       │   │               │   ├── PerformanceController.java
+│   │       │   │               │   ├── PortfolioController.java
+│   │       │   │               │   └── PositionController.java
+│   │       │   │               ├── entity
+│   │       │   │               │   ├── Portfolio.java
+│   │       │   │               │   ├── Position.java
+│   │       │   │               │   └── Transaction.java
+│   │       │   │               ├── event
+│   │       │   │               │   ├── OrderExecutedEvent.java
+│   │       │   │               │   ├── PortfolioEvent.java
+│   │       │   │               │   └── PositionChangedEvent.java
+│   │       │   │               ├── messaging
+│   │       │   │               │   ├── KafkaConsumerConfig.java
+│   │       │   │               │   ├── OrderEventConsumer.java
+│   │       │   │               │   └── PortfolioEventPublisher.java
+│   │       │   │               ├── repository
+│   │       │   │               │   ├── PortfolioRepository.java
+│   │       │   │               │   ├── PositionRepository.java
+│   │       │   │               │   └── TransactionRepository.java
+│   │       │   │               └── service
+│   │       │   │                   ├── PerformanceService.java
+│   │       │   │                   ├── PortfolioService.java
+│   │       │   │                   ├── PositionService.java
+│   │       │   │                   └── impl
+│   │       │   │                       ├── PerformanceServiceImpl.java
+│   │       │   │                       ├── PortfolioServiceImpl.java
+│   │       │   │                       └── PositionServiceImpl.java
+│   │       │   └── resources
+│   │       │       ├── application.yml
+│   │       │       ├── bootstrap.yml
+│   │       │       └── logback.xml
+│   │       └── test
+│   │           ├── java
+│   │           │   └── com
+│   │           │       └── tradingplatform
+│   │           │           └── portfolio
+│   │           │               ├── controller
+│   │           │               │   └── PortfolioControllerTest.java
+│   │           │               └── service
+│   │           │                   └── PortfolioServiceTest.java
+│   │           └── resources
+│   │               └── application-test.yml
+│   ├── product-composite-service
+│   │   ├── build.gradle.kts
+│   │   ├── Dockerfile
+│   │   └── src
+│   │       ├── main
+│   │       │   └── java
+│   │       │       └── com
+│   │       │           └── tradingplatform
+│   │       │               └── productcomposite
+│   │       │                   ├── ProductCompositeServiceApplication.java
+│   │       │                   ├── aggregation
+│   │       │                   │   └── ProductCompositeAggregator.java
+│   │       │                   ├── config
+│   │       │                   │   ├── CircuitBreakerConfig.java
+│   │       │                   │   └── WebClientConfig.java
+│   │       │                   ├── controller
+│   │       │                   │   └── ProductCompositeController.java
+│   │       │                   ├── dto
+│   │       │                   │   ├── ProductCompositeDto.java
+│   │       │                   │   └── ProductDto.java
+│   │       │                   └── integration
+│   │       │                       ├── ProductClient.java
+│   │       │                       ├── RecommendationClient.java
+│   │       │                       └── ReviewClient.java
+│   │       └── test
+│   │           └── java
+│   │               └── com
+│   │                   └── tradingplatform
+│   │                       └── productcomposite
+│   │                           ├── ProductCompositeServiceApplicationTests.java
+│   │                           └── controller
+│   │                               └── ProductCompositeControllerTest.java
+│   ├── product-service
+│   │   ├── build.gradle.kts
+│   │   ├── Dockerfile
+│   │   └── src
+│   │       ├── main
+│   │       │   └── java
+│   │       │       └── com
+│   │       │           └── tradingplatform
+│   │       │               └── product
+│   │       │                   ├── ProductServiceApplication.java
+│   │       │                   ├── config
+│   │       │                   │   ├── CacheConfig.java
+│   │       │                   │   └── SecurityConfig.java
+│   │       │                   ├── controller
+│   │       │                   │   └── ProductController.java
+│   │       │                   ├── entity
+│   │       │                   │   ├── Category.java
+│   │       │                   │   ├── Product.java
+│   │       │                   │   └── ProductMetadata.java
+│   │       │                   ├── repository
+│   │       │                   │   ├── CategoryRepository.java
+│   │       │                   │   ├── ProductMetadataRepository.java
+│   │       │                   │   └── ProductRepository.java
+│   │       │                   └── service
+│   │       │                       ├── ProductService.java
+│   │       │                       └── impl
+│   │       │                           └── ProductServiceImpl.java
+│   │       └── test
+│   │           └── java
+│   │               └── com
+│   │                   └── tradingplatform
+│   │                       └── product
+│   │                           ├── ProductServiceApplicationTests.java
+│   │                           └── controller
+│   │                               └── ProductControllerTest.java
+│   ├── realtime-data-service
+│   │   ├── build.gradle
+│   │   ├── Dockerfile
+│   │   └── src
+│   │       ├── main
+│   │       │   ├── java
+│   │       │   │   └── com
+│   │       │   │       ├── com
+│   │       │   │       │   └── tradingplatform
+│   │       │   │       │       └── marketdata
+│   │       │   │       │           └── external
+│   │       │   │       │               └── DataProviderClient.java
+│   │       │   │       └── tradingplatform
+│   │       │   │           └── realtimedata
+│   │       │   │               ├── RealtimeDataServiceApplication.java
+│   │       │   │               ├── config
+│   │       │   │               │   ├── KafkaConfig.java
+│   │       │   │               │   ├── WebSocketConfig.java
+│   │       │   │               │   └── WebsocketSecurityConfig.java
+│   │       │   │               ├── controller
+│   │       │   │               │   ├── MarketDataController.java
+│   │       │   │               │   └── WebSocketController.java
+│   │       │   │               ├── dto
+│   │       │   │               │   ├── MarketDataMessage.java
+│   │       │   │               │   └── PriceUpdate.java
+│   │       │   │               ├── entity
+│   │       │   │               │   ├── MarketData.java
+│   │       │   │               │   └── Quote.java
+│   │       │   │               ├── repository
+│   │       │   │               │   ├── MarketDataRepository.java
+│   │       │   │               │   └── QuoteRepository.java
+│   │       │   │               └── service
+│   │       │   │                   ├── MarketDataService.java
+│   │       │   │                   ├── PriceStreamService.java
+│   │       │   │                   ├── QuoteService.java
+│   │       │   │                   └── impl
+│   │       │   │                       ├── MarketDataServiceImpl.java
+│   │       │   │                       └── QuoteServiceImpl.java
+│   │       │   └
