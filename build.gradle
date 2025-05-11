@@ -1,0 +1,100 @@
+plugins {
+    id 'org.springframework.boot' version '3.2.0' apply false
+    id 'io.spring.dependency-management' version '1.1.4' apply false
+    id 'com.github.node-gradle.node' version '7.0.1' apply false
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.tradingplatform'
+    version = '1.0.0'
+
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+subprojects {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation platform('org.springframework.boot:spring-boot-dependencies:3.2.0')
+        implementation platform('org.springframework.cloud:spring-cloud-dependencies:2023.0.0')
+        
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+// Configuration for all Java projects
+configure(subprojects.findAll { it.path.startsWith(':microservices') || it.path in [':api', ':auth', ':common', ':util'] }) {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.kafka:spring-kafka'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+}
+
+// Frontend configuration
+if (findProject(':frontend') != null) {
+    project(':frontend') {
+    apply plugin: 'com.github.node-gradle.node'
+
+    node {
+        version = '20.9.0'
+        npmVersion = '10.1.0'
+        download = true
+    }
+
+    task npmInstall(type: NpmTask) {
+        description = 'Install Node.js dependencies'
+        args = ['install']
+    }
+
+    task npmBuild(type: NpmTask) {
+        description = 'Build the frontend application'
+        dependsOn npmInstall
+        args = ['run', 'build']
+    }
+
+    task npmTest(type: NpmTask) {
+        description = 'Run frontend tests'
+        args = ['run', 'test']
+    }
+
+    task npmLint(type: NpmTask) {
+        description = 'Run frontend linting'
+        args = ['run', 'lint']
+    }
+    }
+}
+
+// Task to build everything
+task buildAll {
+    description = 'Build all modules including microservices and frontend'
+    
+    def buildTasks = subprojects.findAll { it.path.startsWith(':microservices') }.collect { 
+        it.tasks.named('build') 
+    }
+    
+    if (findProject(':frontend') != null) {
+        buildTasks.add(project(':frontend').tasks.named('npmBuild'))
+    }
+    
+    dependsOn buildTasks
+}
