@@ -221,3 +221,6 @@ jacoco/
 # Local configuration
 application-local.yml
 application-local.properties
+
+# GitHub Copilot specific files
+*.new
