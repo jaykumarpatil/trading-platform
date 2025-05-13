@@ -53,7 +53,7 @@ EOF
 }
 
 # Create microservice structures
-for service in admin order portfolio product realtime-data recommendation review tradinganalytics userauth websocket; do
+for service in admin order portfolio product realtime-data recommendation review analytics userauth websocket; do
     create_service_structure "$WORKSPACE_ROOT/microservices/${service}-service" "$service"
 done
 

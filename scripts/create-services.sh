@@ -115,7 +115,7 @@ services=(
     "realtime-data"
     "recommendation"
     "review"
-    "tradinganalytics"
+    "analytics"
     "userauth"
     "websocket"
 )

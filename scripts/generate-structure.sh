@@ -515,7 +515,7 @@ create_microservice_structure "recommendation-service"
 create_microservice_structure "review-service"
 create_microservice_structure "userauth-service" 
 create_microservice_structure "reporting-service"
-create_microservice_structure "tradinganalytics-service"
+create_microservice_structure "analytics-service"
 
 # Create realtime-data-service specific files
 create_microservice_structure "realtime-data-service"

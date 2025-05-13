@@ -226,3 +226,14 @@ application-local.properties
 
 # GitHub Copilot specific files
 *.new
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+
+# gradle specific files
+.gradle/
+gradle-wrapper.jar
